@@ -1,24 +1,25 @@
 package com.example.consecutivepractice
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.*
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -37,10 +38,14 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             Scaffold(
                 topBar = {
+                    @OptIn(ExperimentalMaterial3Api::class)
                     TopAppBar(
                         title = {
-                            androidx.compose.material3.Text("Фильмы")
+                            Text("Фильмы", fontSize = 22.sp)
                         },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colors.primary
+                        )
                     )
                 },
                 bottomBar = {
@@ -48,7 +53,7 @@ class MainActivity : ComponentActivity() {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
                         val currentRoute = navBackStackEntry?.destination?.route
                         BottomNavigationItem(
-                            icon = { Icon(Icons.Filled.Home, contentDescription = "home")  },
+                            icon = { Icon(Icons.Filled.Home, contentDescription = "home") },
                             label = { Text("Home") },
                             selected = currentRoute == "home",
                             onClick = { navController.navigate("home") }
@@ -67,24 +72,27 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
-            ) {
-                NavHost(navController, startDestination = "home") {
+            ) { innerPadding ->
+                NavHost(navController, startDestination = "home", modifier = Modifier.padding(innerPadding)) {
                     composable("home") { HomeScreen() }
                     composable("list") {
-                        ListScreen{movieId ->
-                        navController.navigate("movie_detail/$movieId")
+                        ListScreen { movieId ->
+                            navController.navigate("movie_detail/$movieId")
                         }
                     }
-                    composable("movie_detail/{movieId}") {
-                        val movieId = it.arguments?.getString("movieId")
-                        MovieDetailScreen(movieId = movieId?.toInt() ?: 0, navController = navController)
+                        composable("movie_detail/{movieId}") {
+                            val movieId = it.arguments?.getString("movieId")
+                            MovieDetailScreen(
+                                movieId = movieId?.toInt() ?: 0,
+                                navController = navController
+                            )
+                        }
+                        composable("settings") { SettingsScreen() }
                     }
-                    composable("settings") { SettingsScreen() }
                 }
             }
         }
     }
-}
 
 
 @Preview
@@ -92,6 +100,7 @@ class MainActivity : ComponentActivity() {
 fun DefaultPreview() {
     MainActivity()
 }
+
 
 
 

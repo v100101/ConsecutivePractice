@@ -2,10 +2,7 @@ package com.example.consecutivepractice.components
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.consecutivepractice.model.Movie
-import kotlinx.coroutines.launch
-
 class MovieViewModel: ViewModel() {
     private val _movies = mutableStateListOf<Movie>()
 
@@ -15,7 +12,7 @@ class MovieViewModel: ViewModel() {
     init {
         _movies.addAll(listOf(
                 Movie(1, "Профессионал (2024)", "Гангстер хочет встретить старость с семьей, но у подельников другие планы. Бодрый триллер с Лиамом Нисоном", "\n" +
-                        "2024", "https://avatars.mds.yandex.net/get-kinopoisk-image/10953618/aa83aa4d-bf5f-41d1-aaee-4024dca539a7/300x", "\n" +
+                        "2024", "https://avatars.mds.yandex.net/get-kinopoisk-image/10835644/6f727077-20d3-4c24-a111-74228b8a374b/300x", "\n" +
                         "боевик"),
                 Movie(2, "Гнев человеческий (2021)", "Хладнокровный Эйч идет по следу грабителей, убивших его сына. Джейсон Стэйтем в брутальном боевике Гая Ричи", "\n" +
                         "\n" +

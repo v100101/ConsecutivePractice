@@ -16,16 +16,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.example.consecutivepractice.components.MovieViewModel
-import com.example.consecutivepractice.model.Movie
 
 @Composable
 fun ListScreen(onCardClick: (Int) -> Unit) {
@@ -36,17 +35,31 @@ fun ListScreen(onCardClick: (Int) -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .shadow(8.dp, RoundedCornerShape(8.dp))
                     .clickable { onCardClick(movie.id) }
             ) {
-                Row {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Image(
                         painter = rememberImagePainter(movie.posterUrl),
                         contentDescription = null,
                         modifier = Modifier.size(170.dp)
                     )
                     Column {
-                        Text(movie.title)
-                        Text(movie.description)
+                        Text(
+                            movie.title,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Text(
+                            text = movie.genres,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = movie.description.take(50) + "...",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     }
                 }
             }
